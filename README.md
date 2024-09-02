@@ -1,5 +1,4 @@
-
-This is a Next.js project about my portfolio website.
+Reuploaded with some changes and improvements.
 
 # Next.js Modern Portfolio
 
