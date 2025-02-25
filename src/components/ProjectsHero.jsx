@@ -1,13 +1,92 @@
+import { useEffect, useState } from "react";
+
 export default function ProjectsHero({ repos }) {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const scrollToProject = (index) => {
+        const projectElements = document.querySelectorAll('.project-item');
+        
+        if (projectElements[index]) {
+            projectElements[index].scrollIntoView({ behavior: 'smooth', inline: 'start' });
+            setCurrentIndex(index);
+        }
+    };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const container = document.querySelector('.projects-container');
+            if (!container) return;
+
+            const scrollPosition = container.scrollLeft;
+            const itemWidth = container.offsetWidth;
+            const newIndex = Math.round(scrollPosition / itemWidth);
+            
+            if (newIndex !== currentIndex) {
+                setCurrentIndex(newIndex);
+            }
+        };
+
+        const container = document.querySelector('.projects-container');
+        if (container) {
+            container.addEventListener('scroll', handleScroll);
+            return () => container.removeEventListener('scroll', handleScroll);
+        }
+    }, [currentIndex]);
+
     return (
         <div className="h-screen relative flex overflow-hidden flex-col text-left md:flex-row max-w-full justify-evenly mx-auto items-center z-0">
             <h3 className="absolute top-36 md:top-28 uppercase tracking-[20px] text-gray-500 text-2xl">
                 Projects
             </h3>
 
-            <div className="relative w-full flex overflow-x-scroll overflow-y-hidden snap-x snap-mandatory z-20 scrollbar-thin scrollbar-thumb-purple-900 scrollbar-transparent">
-                {repos?.map((repo) => (
-                    <div className="w-screen flex-shrink-0 snap-start flex flex-col space-y-5 items-center justify-center p-20 md:p-44 h-screen" key={repo.id}>
+            <div className="absolute bottom-10 flex space-x-2 justify-center w-full z-30">
+                {repos?.map((repo, index) => (
+                    <button 
+                        key={repo.id} 
+                        onClick={() => scrollToProject(index)}
+                        className={`w-3 h-3 rounded-full cursor-pointer transition-all duration-300 ${
+                            currentIndex === index 
+                                ? "bg-[#2c8dab] scale-125" 
+                                : "bg-gray-300 opacity-50 hover:opacity-100"
+                        }`}
+                        aria-label={`View project ${index + 1}: ${repo.name}`}
+                    />
+                ))}
+            </div>
+
+            <div className="absolute inset-y-0 left-0 z-30 flex items-center px-2 md:px-4">
+                <button 
+                    onClick={() => scrollToProject(Math.max(0, currentIndex - 1))}
+                    className={`p-2 rounded-full bg-black/30 text-white hover:bg-black/50 transition-all ${
+                        currentIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'opacity-70'
+                    }`}
+                    disabled={currentIndex === 0}
+                    aria-label="Previous project"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+            </div>
+            
+            <div className="absolute inset-y-0 right-0 z-30 flex items-center px-2 md:px-4">
+                <button 
+                    onClick={() => scrollToProject(Math.min(repos.length - 1, currentIndex + 1))}
+                    className={`p-2 rounded-full bg-black/30 text-white hover:bg-black/50 transition-all ${
+                        currentIndex === repos.length - 1 ? 'opacity-30 cursor-not-allowed' : 'opacity-70'
+                    }`}
+                    disabled={currentIndex === repos.length - 1}
+                    aria-label="Next project"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+
+            <div className="relative w-full flex overflow-x-scroll overflow-y-hidden snap-x snap-mandatory z-20 scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-[#2c8dab]/80 projects-container">
+                {repos?.map((repo, index) => (
+                    <div className="w-screen flex-shrink-0 snap-start flex flex-col space-y-5 items-center justify-center p-20 md:p-44 h-screen project-item" key={repo.id}>
                         <div className="bg-gray-900 w-96 h-64 rounded-lg">
                             <div className="flex p-2 gap-2 ml-2 mt-1">
                                 <div>
@@ -76,6 +155,10 @@ export default function ProjectsHero({ repos }) {
                                     className="h-9 px-4 py-2 max-w-52 whitespace-pre w-full md:hidden"
                                 ></div>
                             )}
+                        </div>
+
+                        <div className="absolute bottom-20 text-gray-400 text-sm">
+                            {index + 1}/{repos.length}
                         </div>
                     </div>
                 ))}

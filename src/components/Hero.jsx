@@ -24,14 +24,14 @@ export default function Hero() {
       <div className="flex justify-center relative z-10 top-32">
         <Link
           href="/hire-me"
-          class="group/button relative inline-flex items-center gap-2 justify-center overflow-hidden rounded-md bg-blue-500/30 backdrop-blur-lg px-6 py-2 text-base font-semibold text-white transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl hover:shadow-blue-600/50 border border-white/20"
+          className="group/button relative inline-flex items-center gap-2 justify-center overflow-hidden rounded-md bg-blue-500/30 backdrop-blur-lg px-6 py-2 text-base font-semibold text-white transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-xl hover:shadow-blue-600/50 border border-white/20"
         >
           <MdEmail className="text-lg" />
-          <span class="text-lg">Contact</span>
+          <span className="text-lg">Contact</span>
           <div
-            class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-13deg)_translateX(-100%)] group-hover/button:duration-1000 group-hover/button:[transform:skew(-13deg)_translateX(100%)]"
+            className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-13deg)_translateX(-100%)] group-hover/button:duration-1000 group-hover/button:[transform:skew(-13deg)_translateX(100%)]"
           >
-            <div class="relative h-full w-10 bg-white/30"></div>
+            <div className="relative h-full w-10 bg-white/30"></div>
           </div>
         </Link>
 
