@@ -3,7 +3,7 @@ import DevIcon from "devicon-react-svg";
 import { TbBrandCpp, TbBrandNextjs } from "react-icons/tb"; 
 import { SiExpress, SiTailwindcss, SiSupabase } from "react-icons/si";
 
-export default function AboutMe() {
+export default function SkillsHero() {
 
     const languages = [
         {
